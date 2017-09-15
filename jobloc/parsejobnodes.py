@@ -26,11 +26,16 @@ def readGlobalConfiguration_(f, node_id, rank):
 
     if int(processor_id) == node_id:
       print rank, processor_id, cab_position, cab_row, cage, slot, cpu
+      fout.write('%s %s %s %s %s %s %s\n' % (rank, processor_id, cab_position, cab_row, cage, slot, cpu))
       break
 
 #3572-3579,3727-3734
-def readAllocation_():
-  
+def readAllocation_(nodeconfig, nidstringfile):
+ 
+  global fout
+
+  jobmap = "jobmap_"+nidstringfile
+
   f = open(nidstringfile, "r")
   nidstring = f.readline()
   f.close()
@@ -47,6 +52,9 @@ def readAllocation_():
 
   rank = -1
   cluster = 0
+  f = open(nodeconfig, "r")
+  fout = open(jobmap, "w+")
+
   for group in nodegroups:
     #print group
     group = group.rstrip('\n')
@@ -57,14 +65,14 @@ def readAllocation_():
     else:
       nodes = group.split('-')
 
-    f = open(nodeconfig, "r")
+    #f = open(nodeconfig, "r")
     localrank = 0
     for node in range(int(nodes[0]),int(nodes[1])+1):
       rank = rank + 1
       readGlobalConfiguration_(f, node, rank)
       localrank = localrank + 1
       #print node
-    f.close()
+    #f.close()
     #print localrank
 
     cluster = cluster + 1
@@ -72,12 +80,16 @@ def readAllocation_():
     print 'JOB: centroid of cluster ', group, centroidRank
     print
     
+  f.close()
+  fout.close()
+
 
 #config file
-nodeconfig = sys.argv[1]
+nodecfg = sys.argv[1]
+
 #current allocation
-nidstringfile = sys.argv[2] 
+nidstrfile = sys.argv[2] 
 
 #readGlobalConfiguration_()
-readAllocation_()
+readAllocation_(nodecfg, nidstrfile)
 
