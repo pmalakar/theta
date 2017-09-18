@@ -1,0 +1,22 @@
+#!/bin/bash -l
+#SBATCH -p debug
+#SBATCH -t 00:10:00
+#SBATCH -L SCRATCH
+#SBATCH -C haswell
+#SBATCH -J my_job
+#SBATCH -o my_job.o%j
+
+#Cori Haswell has 32 cores per compute node
+
+export OMP_NUM_THREADS=1
+export OMP_PLACES=threads
+export OMP_PROC_BIND=spread
+
+Hcores=64
+mpipernode=1
+
+nodes=$SLURM_JOB_NUM_NODES
+procs=`echo "$nodes*${mpipernode}"|bc`
+
+srun -n ${procs} -N ${nodes} ./location.x
+
