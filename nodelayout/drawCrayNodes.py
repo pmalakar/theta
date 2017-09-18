@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-
 import sys
-sys.path.append('/Users/preeti/work/projects/ECP17/code/jobmap/')
-import parsejobnodes
+
+from parsejobnodes import readAllocation_
 
 patterns = ['-', 'x', 'o', 'O', '.', '*']  # more patterns
 
@@ -63,7 +62,6 @@ nodecfg = sys.argv[1]
 #current allocation
 nidstrfile = sys.argv[2] 
 
-#readGlobalConfiguration_()
 readAllocation_(nodecfg, nidstrfile)
 
 jobmap = 'jobmap_'+nidstrfile
