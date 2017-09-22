@@ -127,7 +127,6 @@ def store_useful_comment(pieces, finfo_dict, curr_fname):
         liststr = pieces[1][1:]
         listnums = listnumpattern.match(liststr).groups()[0]
         OSTlist = [int(x) for x in re.findall(r'\d+', listnums)]
-        #print OSTlist
         finfo_dict[curr_fname]['OST_list'] = OSTlist
     return curr_fname
 
@@ -138,7 +137,6 @@ def parse_dxt_log_line(line, curr_fname, finfo_dict):
     pieces = line.split(":")
     if comment_dxt.match(pieces[0]):
         if use_comment.match(pieces[0]):
-            #print line
             curr_fname = store_useful_comment(pieces, finfo_dict, curr_fname)
             return (curr_fname, (), -1)
         header_match = header.match(line)
@@ -220,7 +218,6 @@ def get_ost_info(data, module, action, ostnum):
     IOdata = map(lambda x: x[1], data)
     filtered = map(lambda x: x[1], filter(lambda x: x[0]==keyword, IOdata))
     activities = map(lambda x: (x[0], (x[2], x[3])), filtered)
-    #print int(np.array(filtered[0])[4])
     counts = sum(1 for x in filtered if x[4] == ostnum)
     return counts
 
