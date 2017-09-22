@@ -74,9 +74,11 @@ python dxt_analyzer.py -i darshan_dxt-v.txt
 '''
 
 import numpy as np
-import matplotlib
-matplotlib.use('PDF')
-import matplotlib.pyplot as plt
+import os
+if 'theta' not in os.environ['HOST']:
+ import matplotlib
+ matplotlib.use('PDF')
+ import matplotlib.pyplot as plt
 import re
 import argparse
 
