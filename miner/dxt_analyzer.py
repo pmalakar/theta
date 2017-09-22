@@ -127,7 +127,6 @@ def store_useful_comment(pieces, finfo_dict, curr_fname):
         liststr = pieces[1][1:]
         listnums = listnumpattern.match(liststr).groups()[0]
         OSTlist = [int(x) for x in re.findall(r'\d+', listnums)]
-        #print OSTlist
         finfo_dict[curr_fname]['OST_list'] = OSTlist
     return curr_fname
 
@@ -138,7 +137,6 @@ def parse_dxt_log_line(line, curr_fname, finfo_dict):
     pieces = line.split(":")
     if comment_dxt.match(pieces[0]):
         if use_comment.match(pieces[0]):
-            #print line
             curr_fname = store_useful_comment(pieces, finfo_dict, curr_fname)
             return (curr_fname, (), -1)
         header_match = header.match(line)
