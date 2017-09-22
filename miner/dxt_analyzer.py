@@ -220,7 +220,6 @@ def get_ost_info(data, module, action, ostnum):
     IOdata = map(lambda x: x[1], data)
     filtered = map(lambda x: x[1], filter(lambda x: x[0]==keyword, IOdata))
     activities = map(lambda x: (x[0], (x[2], x[3])), filtered)
-    #print int(np.array(filtered[0])[4])
     counts = sum(1 for x in filtered if x[4] == ostnum)
     return counts
 
