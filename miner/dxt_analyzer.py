@@ -88,7 +88,8 @@ import argparse
 global_finfo = {} 
 #'filename':{'rw':[], 'mount':'', 'fs':'', 'stripe_size':-1, 'stripe_width':-1, 'OSTlist':[]}
 #                    Module          rank         write/read      segment               offset                   length                 start                     end                    OST
-POSIX_LOG_PATTERN = ' (X_POSIX)\s+([+-]?\d+(?:\.\d+)?)\s+(\S+)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+\[\s*([+-]?\d+(?:\.\d+)?)\]\.*'
+#POSIX_LOG_PATTERN = ' (X_POSIX)\s+([+-]?\d+(?:\.\d+)?)\s+(\S+)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+\[\s*([+-]?\d+(?:\.\d+)?)\]\.*'
+POSIX_LOG_PATTERN = ' (X_POSIX)\s+([+-]?\d+(?:\.\d+)?)\s+(\S+)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+(\[.*\])+\.*'
 POSIX_LOG_NO_OSTS = ' (X_POSIX)\s+([+-]?\d+(?:\.\d+)?)\s+(\S+)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)\s+([+-]?\d+(?:\.\d+)?)'
 
 #                    Module          rank         write/read      segment               length                   start                     end 
@@ -97,7 +98,7 @@ MPIIO_LOG_PATTERN = ' (X_MPIIO)\s+([+-]?\d+(?:\.\d+)?)\s+(\S+)\s+([+-]?\d+(?:\.\
 HEADER_PATTERN = '(#\s+)(\S+):(\s+)(\d+)'
 COMMENT_PATTERN_DXT = '# \.*'
 USEFUL_COMMENT_PATTERN = '# DXT,\.*'
-LISTNUM_PATTERN = '(\d+.*)'
+LISTNUM_PATTERN = '((\d+.*)\s?)+'
 OST_ACCESS_PATTERN = ''
 
 header = re.compile(HEADER_PATTERN)
@@ -154,9 +155,10 @@ def parse_dxt_log_line(line, curr_fname, finfo_dict):
                 int(data.group(6)), #length
                 float(data.group(7)), #start
                 float(data.group(8)), #end
-                int(data.group(9))  #OST
+                data.group(9)  #list of OSTs
+                #int(data.group(9))  #OST
             )
-        ), 1)
+            ), 1)
     data = posix_no_ost.match(line)
     if data:
         return (curr_fname,
@@ -213,12 +215,12 @@ def get_verts_all(data, module, action):
     return verts[1:]
 
 def get_ost_info(data, module, action, ostnum):
-    '''make a list of rectangle vertices to plot the posix/mpi read/write activity for each rank'''
+    '''count #accesses for the posix read/write activity for each ost'''
     keyword = module+'_'+action
     IOdata = map(lambda x: x[1], data)
     filtered = map(lambda x: x[1], filter(lambda x: x[0]==keyword, IOdata))
-    activities = map(lambda x: (x[0], (x[2], x[3])), filtered)
-    counts = sum(1 for x in filtered if x[4] == ostnum)
+    pattern = str(ostnum)
+    counts = sum(1 for x in filtered if re.findall(pattern, x[4]))
     return counts
 
 #------------------------------------------------------------------------------
@@ -241,6 +243,8 @@ action = 'WRITE'
 showflag = False # If you do not want to save, set this to True. 
 savefig = 'dxt_plot.pdf' 
 ostaccess_flag = False
+
+OSTlist = []
 
 parser = argparse.ArgumentParser(description='io activity plot from dxt log')
 parser.add_argument("-i", "--input", action="store", dest="dxt_logname", required=True, help="dxt log path")
@@ -289,8 +293,6 @@ with open(dxt_logname) as infile:
 if ostaccess_flag == True:
     ost, posix_write_ost, posix_read_ost = [], [], []
     for key, value in finfo_dict.items() :
-        #print(" ".join(str(x) for x in value['OST_list']))
-
         for ostnum in value['OST_list']:
             ost.append(ostnum)
             posix_ost = get_ost_info(logdata, 'POSIX', 'WRITE', ostnum)
@@ -299,7 +301,7 @@ if ostaccess_flag == True:
             posix_ost = get_ost_info(logdata, 'POSIX', 'READ', ostnum)
             posix_read_ost.append(posix_ost)
         for x in range(len(ost)):
-                print ost[x], posix_write_ost[x], posix_read_ost[x] 
+            print ost[x], posix_write_ost[x], posix_read_ost[x] 
 
 exit()
 
