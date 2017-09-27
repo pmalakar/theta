@@ -219,7 +219,7 @@ def get_ost_info(data, module, action, ostnum):
     keyword = module+'_'+action
     IOdata = map(lambda x: x[1], data)
     filtered = map(lambda x: x[1], filter(lambda x: x[0]==keyword, IOdata))
-    pattern = str(ostnum)
+    pattern = '\[\s*('+str(ostnum)+')\]' #str(ostnum)
     counts = sum(1 for x in filtered if re.findall(pattern, x[4]))
     return counts
 
