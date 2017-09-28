@@ -15,11 +15,11 @@ int main(int argc, char * argv[])
   MPI_Comm_rank(MPI_COMM_WORLD, &rank);
   MPI_Comm_size(MPI_COMM_WORLD, &size);
 
-	int nid;
-	FILE *nidfile = fopen("/proc/cray_xt/nid", "r");
+  int nid;
+  FILE *nidfile = fopen("/proc/cray_xt/nid", "r");
   if (nidfile!=NULL) 
     fscanf(nidfile, "%d", &nid);
-	fclose(nidfile);
+  fclose(nidfile);
 
   xctopo_t topo;
   rc = xctopo_get_mycoords(&topo);
