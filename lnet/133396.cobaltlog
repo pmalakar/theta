@@ -1,0 +1,27 @@
+Jobid: 133396
+qsub --mode script -A Performance -n 2 --mode script -n 8 -t 30 ./runstatus.sh
+Thu Sep 28 03:41:54 2017 +0000 (UTC) submitted with cwd set to: /lus/theta-fs0/projects/Performance/preeti/work/systest/theta/lnet
+jobid 133396 submitted from terminal /dev/pts/16
+Thu Sep 28 03:42:47 2017 +0000 (UTC) 
+Thu Sep 28 03:42:47 2017 +0000 (UTC) Command: '/lus/theta-fs0/projects/Performance/preeti/work/systest/theta/lnet/./runstatus.sh'
+Thu Sep 28 03:42:47 2017 +0000 (UTC) 
+Thu Sep 28 03:42:47 2017 +0000 (UTC) Environment:
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_PARTCORES=64
+Thu Sep 28 03:42:47 2017 +0000 (UTC) SHELL=/bin/bash
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_PROJECT=Performance
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_PARTNAME=1210,2684-2689,2836
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_JOBID=133396
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_STARTTIME=1506570138
+Thu Sep 28 03:42:47 2017 +0000 (UTC) LOGNAME=preeti
+Thu Sep 28 03:42:47 2017 +0000 (UTC) USER=preeti
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_ENDTIME=1506571938
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_PARTSIZE=8
+Thu Sep 28 03:42:47 2017 +0000 (UTC) HOME=/home/preeti
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_JOBSIZE=8
+Thu Sep 28 03:42:47 2017 +0000 (UTC) COBALT_QUEUE=default
+Thu Sep 28 03:42:47 2017 +0000 (UTC) 
+Thu Sep 28 03:42:47 2017 +0000 (UTC) Info: stdin received from /dev/null
+Thu Sep 28 03:42:47 2017 +0000 (UTC) Info: stdout sent to /lus/theta-fs0/projects/Performance/preeti/work/systest/theta/lnet/133396.output
+Thu Sep 28 03:42:47 2017 +0000 (UTC) Info: stderr sent to /lus/theta-fs0/projects/Performance/preeti/work/systest/theta/lnet/133396.error
+Thu Sep 28 03:42:47 2017 +0000 (UTC) 
+Thu Sep 28 03:43:53 2017 +0000 (UTC) Info: task completed normally with an exit code of 0; initiating job cleanup and removal
