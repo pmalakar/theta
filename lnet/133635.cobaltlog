@@ -1,4 +1,0 @@
-Jobid: 133635
-qsub --mode script -A Performance -n 4 --mode script -n 8 -t 30 ./run.sh
-Thu Sep 28 17:55:32 2017 +0000 (UTC) submitted with cwd set to: /lus/theta-fs0/projects/Performance/preeti/work/systest/theta/lnet
-jobid 133635 submitted from terminal /dev/pts/21
