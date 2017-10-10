@@ -9,6 +9,8 @@
 #include <stdlib.h>
 #include <lustre/lustreapi.h>
 #include <lustre/lustre_user.h>
+#include "lustreinfo.h"
+
 #define MAX_OSTS 1024
 #define LOV_EA_SIZE(lum, num) (sizeof(*lum) + num * sizeof(*lum->lmm_objects))
 #define LOV_EA_MAX(lum) LOV_EA_SIZE(lum, MAX_OSTS)

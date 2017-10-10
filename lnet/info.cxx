@@ -35,12 +35,13 @@ void getLNETroute() {
    routes = getinfo ("/proc/sys/lnet/routes");
    stats = getinfo ("/proc/sys/lnet/stats");
 
-   system ("grep current_conn /proc/fs/lustre/osc/snx11214-OST00*/import");
+   //system ("grep current_conn /proc/fs/lustre/osc/snx11214-OST00*/import");
    //buf = getinfo ("/proc/fs/lustre/osc/snx11214-OST00*/ost_conn_uuid"); 
 
    if (subrank == 0) {
       puts(routesconf);
-      puts(stats);
+      //puts(stats);
+      system ("cat /etc/lnet/routes.conf");
    }  
 }
 
