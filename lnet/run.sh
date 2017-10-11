@@ -13,6 +13,7 @@
 export MPICH_MPIIO_HINTS_DISPLAY=1
 export MPICH_MPIIO_AGGREGATOR_PLACEMENT_DISPLAY=1 
 export MPICH_MPIIO_STATS=1
+export MPICH_MPIIO_XSTATS=1
 export MPICH_MPIIO_TIMERS=1
 
 echo "***"
@@ -41,6 +42,8 @@ ENVVARS=""
 
 #grep current_conn /proc/fs/lustre/osc/snx11214-OST00*/import
 #cat /proc/fs/lustre/osc/snx11214-OST00*/ost_conn_uuid 
+#cat /proc/sys/lnet/routes
+#cat /proc/sys/lnet/stats
 
 aprun ${ENVVARS} ${APRUNPARAMS} ${EXE}
 
