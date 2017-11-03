@@ -11,8 +11,8 @@ def draw_():
  fig = plt.figure(figsize=(15,10))
  ax = fig.add_subplot(111, aspect='equal')
 
- ax.set_xlim([0,9.5])
- ax.set_ylim([0,26])
+ ax.set_xlim([0,100])
+ ax.set_ylim([0,18])
 
  for cab_row in range(0,2):
   for cab_pos in range(0,12):
@@ -27,20 +27,25 @@ def draw_():
  #print locations
  #print cabinet_positions
 
- xwidth = 3.2
- ywidth = 1.5
- spacer = 1
- xdist  = spacer + xwidth
- ydist  = spacer + ywidth
+ xwidth = 6.4
+ ywidth = 3.6
+
+ routerwidth = xwidth/16
+ routerheight = ywidth/3
+
+ spacer1 = 0.1
+ spacer2 = 3
+ spacer3 = 5
+ xdist  = spacer2 + xwidth
+ ydist  = spacer3 + ywidth
 
  idx = -1
-
- for j in range(0,10):
-  for i in range(0,2):
+ for j in range(0,2):
+  for i in range(0,10):
    
    idx = idx + 1
-   posx = spacer + (i * xdist)
-   posy = spacer + (j * ydist)
+   posx = spacer2 + (i * xdist)
+   posy = spacer2 + (j * ydist)
    p = patches.Rectangle(
         (posx, posy),
         xwidth,
@@ -51,18 +56,27 @@ def draw_():
    ) 
    ax.add_patch(p)
    x = posx + xwidth/2
-   y = posy - 0.5
-   ax.text(x, y, cabinets[idx],horizontalalignment='center',size='large', color='g', fontweight='bold')
+   y = posy - ywidth/2 #- spacer1
+   ax.text(x, y, cabinets[idx], horizontalalignment='center', size='large', color='g', fontweight='bold')
    #print posx, posy, cabinets[idx]
 
+ #idx = -1
+ #for j in range(0,2):
+ # for i in range(0,10):
+   
+ #  idx = idx + 1
    for item in locations: #cabinet_positions:
      if int(item[2]) == cabinet_positions[idx][0] and int(item[3]) == cabinet_positions[idx][1]:
-      print idx, item
-      ax.text(x, y + spacer, 'x', horizontalalignment='center', color='m', fontweight='bold')
+      print idx, item #, cabinet_positions[idx]
+      #ax.text(x, y+spacer2, '*', horizontalalignment='center', color='m', fontweight='bold')
+      nodex = posx + int(item[5])*routerwidth
+      nodey = posy + int(item[4])*routerheight
+      #print nodex, nodey, item[4], item[5], posx, posy, routerheight, routerwidth
+      ax.text(nodex, nodey, 'o', horizontalalignment='center', color='r', fontweight='bold')
       
-
+ plt.tick_params(axis='both', which='both', bottom='off', top='off', labelbottom='off', right='off', left='off', labelleft='off')
  fig.savefig('nodelayout.png', bbox_inches='tight')
- plt.show()
+ #plt.show()
 
 
 ##### Variables
