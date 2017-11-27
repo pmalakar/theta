@@ -1,7 +1,7 @@
 #!/bin/bash -l
 #COBALT -t 30
 ####COBALT -n 1
-#COBALT -A Performance
+#COBALT -A CSC250STDM10 ##Performance
 
 #SBATCH -p debug
 #SBATCH -t 00:10:00
