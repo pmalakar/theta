@@ -33,6 +33,8 @@ def readGlobalConfiguration_(f, node_id, rank):
 def readAllocation_(nodeconfig, nidstringfile):
  
   global fout
+  centroidfile = nidstrfile + ".ctd"
+  centroidRankList = []
 
   jobmap = "jobmap_"+nidstringfile
 
@@ -52,6 +54,7 @@ def readAllocation_(nodeconfig, nidstringfile):
 
   rank = -1
   cluster = 0
+  s=""
   f = open(nodeconfig, "r")
   fout = open(jobmap, "w+")
 
@@ -75,14 +78,23 @@ def readAllocation_(nodeconfig, nidstringfile):
     #f.close()
     #print localrank
 
-    cluster = cluster + 1
     centroidRank = (int(nodes[1]) - int(nodes[0]))/2 + int(nodes[0])
+    centroidRankList.append(centroidRank)
+    if cluster != 0:
+     s+=","
+    s+=str(centroidRank)
+    cluster = cluster + 1
     print 'JOB: centroid of cluster ', group, centroidRank
     print
     
   f.close()
   fout.close()
 
+  fc = open(centroidfile, "w")
+  fc.write(s)
+  fc.write("\n")
+  fc.close()
+ 
 
 #config file
 nodecfg = sys.argv[1]
@@ -92,4 +104,5 @@ nidstrfile = sys.argv[2]
 
 #readGlobalConfiguration_()
 readAllocation_(nodecfg, nidstrfile)
+
 
