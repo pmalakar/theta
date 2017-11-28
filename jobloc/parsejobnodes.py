@@ -82,6 +82,14 @@ def readAllocation_(nodeconfig, nidstringfile):
     centroidRankList.append(centroidRank)
     if cluster != 0:
      s+=","
+    if len(str(centroidRank)) == 1:
+     s+="nid0000"
+    elif len(str(centroidRank)) == 2:
+     s+="nid000"
+    elif len(str(centroidRank)) == 3:
+     s+="nid00"
+    elif len(str(centroidRank)) == 4:
+     s+="nid0"
     s+=str(centroidRank)
     cluster = cluster + 1
     print 'JOB: centroid of cluster ', group, centroidRank
