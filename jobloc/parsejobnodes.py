@@ -29,11 +29,28 @@ def readGlobalConfiguration_(f, node_id, rank):
       fout.write('%s %s %s %s %s %s %s\n' % (rank, processor_id, cab_position, cab_row, cage, slot, cpu))
       break
 
+
+def getfnode(nodename):
+
+    if len(str(nodename)) == 1:
+     nidname = "nid0000"
+    elif len(str(nodename)) == 2:
+     nidname = "nid000"
+    elif len(str(nodename)) == 3:
+     nidname = "nid00"
+    elif len(str(nodename)) == 4:
+     nidname = "nid0"
+ 
+    nidname+=str(nodename)
+    return nidname
+
+
 #3572-3579,3727-3734
 def readAllocation_(nodeconfig, nidstringfile):
  
   global fout
   centroidfile = nidstrfile + ".ctd"
+  nodenamefile = nidstrfile + ".nid"
   centroidRankList = []
 
   jobmap = "jobmap_"+nidstringfile
@@ -55,11 +72,12 @@ def readAllocation_(nodeconfig, nidstringfile):
   rank = -1
   cluster = 0
   s=""
+  s1=""
   f = open(nodeconfig, "r")
   fout = open(jobmap, "w+")
 
   for group in nodegroups:
-    #print group
+    
     group = group.rstrip('\n')
     nodes = []
     if group.find('-') == -1:
@@ -67,30 +85,22 @@ def readAllocation_(nodeconfig, nidstringfile):
       nodes.append(group) #to generalize the below loop
     else:
       nodes = group.split('-')
-
-    #f = open(nodeconfig, "r")
+    
     localrank = 0
     for node in range(int(nodes[0]),int(nodes[1])+1):
       rank = rank + 1
       readGlobalConfiguration_(f, node, rank)
       localrank = localrank + 1
-      #print node
-    #f.close()
-    #print localrank
 
+      if rank > 0:
+        s1+=","
+      s1+=str(getfnode(node))
+    
     centroidRank = (int(nodes[1]) - int(nodes[0]))/2 + int(nodes[0])
     centroidRankList.append(centroidRank)
     if cluster != 0:
      s+=","
-    if len(str(centroidRank)) == 1:
-     s+="nid0000"
-    elif len(str(centroidRank)) == 2:
-     s+="nid000"
-    elif len(str(centroidRank)) == 3:
-     s+="nid00"
-    elif len(str(centroidRank)) == 4:
-     s+="nid0"
-    s+=str(centroidRank)
+    s+=getfnode(centroidRank)
     cluster = cluster + 1
     print 'JOB: centroid of cluster ', group, centroidRank
     print
@@ -103,6 +113,10 @@ def readAllocation_(nodeconfig, nidstringfile):
   fc.write("\n")
   fc.close()
  
+  nidfp = open(nodenamefile, "w")
+  nidfp.write(s1)
+  nidfp.write("\n")
+  nidfp.close()
 
 #config file
 nodecfg = sys.argv[1]
