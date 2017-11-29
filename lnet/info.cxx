@@ -39,8 +39,8 @@ void getLNETroute() {
      printf ("%d %d routesconf %s\n", rank, nprocs, routesconf);
      ip2nets = getinfo ("/etc/lnet/ip2nets.conf");
      printf ("%d %d ip2netsconf %s\n", rank, nprocs, ip2nets);
-  //  system ("cat /proc/sys/lnet/routes");
-  //  system ("cat /proc/sys/lnet/stats");
+   //  system ("cat /proc/sys/lnet/routes");
+   //  system ("cat /proc/sys/lnet/stats");
    } 
 
 }

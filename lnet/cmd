@@ -2,3 +2,7 @@ rm lustreinfo.o liblinfo.a
 cc -c lustreinfo.c -llustreapi
 ar -cvq liblinfo.a lustreinfo.o
 
+cc -O3 -o info info.cxx
+
+qsub -n 4 -t 00:20:00 run.sh 
+
