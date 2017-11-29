@@ -75,7 +75,8 @@ def draw_():
       ax.text(nodex, nodey, 'o', horizontalalignment='center', color='r', fontweight='bold')
       
  plt.tick_params(axis='both', which='both', bottom='off', top='off', labelbottom='off', right='off', left='off', labelleft='off')
- fig.savefig('nodelayout.png', bbox_inches='tight')
+ plotfilename = 'nodelayout.'+nidstrfile+'.png'
+ fig.savefig(plotfilename, bbox_inches='tight')
  #plt.show()
 
 
