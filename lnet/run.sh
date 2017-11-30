@@ -25,6 +25,7 @@ if [[ "$HOST" == *"cori"* ]]; then
 echo "cori"
 grep current_conn /proc/fs/lustre/osc/snx11168-OST00*/import
 cat /proc/fs/lustre/osc/snx11168-OST00*/ost_conn_uuid 
+grep current_conn /proc/fs/lustre/osc/snx*-OST*/import > ost_conn
 nodes=$SLURM_JOB_NUM_NODES
 echo $SLURM_NODELIST
 srun -n 4 -N 2 ${EXE} #./status.knl
