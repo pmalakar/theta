@@ -43,7 +43,7 @@ int get_file_info(char *path)
 	printf("Lov stripe count %hu\n", lump->lmm_stripe_count);
 	printf("Lov stripe offset %u\n", lump->lmm_stripe_offset);
 	for (i = 0; i < lump->lmm_stripe_count; i++) {
-		printf("Object index %d %Lu %Lu Generation of OST index %d\n", lump->lmm_objects[i].l_ost_idx, lump->lmm_objects[i].l_ost_oi.oi.oi_id, lump->lmm_objects[i].l_ost_oi.oi.oi_seq, lump->lmm_objects[i].l_ost_gen);
+		printf("Object index %d OST%04x %Lu %Lu Generation of OST index %d\n", lump->lmm_objects[i].l_ost_idx, lump->lmm_objects[i].l_ost_idx, lump->lmm_objects[i].l_ost_oi.oi.oi_id, lump->lmm_objects[i].l_ost_oi.oi.oi_seq, lump->lmm_objects[i].l_ost_gen);
 		//printf("Object index %d Generation of OST index %d Objid %llu\n", lump->lmm_objects[i].l_ost_idx, lump->lmm_objects[i].l_ost_gen, lump->lmm_objects[i].l_object_id);
    }
  

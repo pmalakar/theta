@@ -1,5 +1,5 @@
 #!/bin/bash -l
-#COBALT -A Performance
+#COBALT -A CSC250STDM10
 #COBALT -n 4
 
 #SBATCH -p debug
@@ -8,7 +8,6 @@
 #SBATCH -J my_job
 #SBATCH -C knl,quad,cache    ####haswell
 ##SBATCH -o my_job.o%j
-
 
 export MPICH_MPIIO_HINTS_DISPLAY=1
 export MPICH_MPIIO_AGGREGATOR_PLACEMENT_DISPLAY=1 
@@ -40,8 +39,8 @@ RANKS=$((${COBALT_PARTSIZE}*$ppn))
 APRUNPARAMS=" -n ${RANKS} -N ${ppn} -d 1 -j 1 -r 1 " #--attrs mcdram=cache:numa=quad "
 ENVVARS=""
 
-#grep current_conn /proc/fs/lustre/osc/snx11214-OST00*/import
-#cat /proc/fs/lustre/osc/snx11214-OST00*/ost_conn_uuid 
+grep current_conn /proc/fs/lustre/osc/snx11214-OST00*/import
+cat /proc/fs/lustre/osc/snx11214-OST00*/ost_conn_uuid 
 #cat /proc/sys/lnet/routes
 #cat /proc/sys/lnet/stats
 
