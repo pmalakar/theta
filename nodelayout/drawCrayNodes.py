@@ -6,6 +6,27 @@ from parsejobnodes import readAllocation_
 
 patterns = ['-', 'x', 'o', 'O', '.', '*']  # more patterns
 
+nidstrfile = ""
+
+osts = []
+
+#expects a line of osts separated by spaces
+#e.g. 50 32 26 22
+def parse_osts():
+
+ global osts
+
+ fname = nidstrfile + '.ost'
+ f = open(fname, 'r')
+
+ while True:
+  line = f.readline()
+  if not line: break
+  osts = line.split()
+ 
+ f.close()
+
+
 def draw_():
 
  fig = plt.figure(figsize=(15,10))
@@ -115,5 +136,16 @@ f.close()
 #print locations
 
 draw_()
+
+print 
+
+parse_osts()
+
+for i in osts:
+ hex_i = 'OST%04x' % int(i)
+ print i, hex_i
+ #grep hex_i in theta.routesconf | awk '{print $3}'  
+
+print 
 
 
