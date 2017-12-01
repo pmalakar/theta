@@ -1,12 +1,15 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import sys
+from subprocess import *
 
 from parsejobnodes import readAllocation_
 
 patterns = ['-', 'x', 'o', 'O', '.', '*']  # more patterns
 
 nidstrfile = ""
+ostfile = ""
+lnet_ost0_file = ""
 
 osts = []
 
@@ -14,10 +17,9 @@ osts = []
 #e.g. 50 32 26 22
 def parse_osts():
 
- global osts
+ global osts, ostfile
 
- fname = nidstrfile + '.ost'
- f = open(fname, 'r')
+ f = open(ostfile, 'r')
 
  while True:
   line = f.readline()
@@ -112,11 +114,16 @@ nodecfg = sys.argv[1]
 #current allocation
 nidstrfile = sys.argv[2] 
 
+ostfile = nidstrfile + '.ost'
+
 readAllocation_(nodecfg, nidstrfile)
 
 #todo if relative path is given, filter the file name
 #if 
 jobmap = 'jobmap_'+nidstrfile
+
+
+
 
 #read the jobmap
 f = open(jobmap, 'r')
@@ -141,11 +148,40 @@ print
 
 parse_osts()
 
+lnet0 = []
+it = 0
+
 for i in osts:
- hex_i = 'OST%04x' % int(i)
- print i, hex_i
- #grep hex_i in theta.routesconf | awk '{print $3}'  
+  hex_i = 'OST%04x' % int(i)
+  #print i, hex_i
+  cmd = 'grep ' + hex_i + ' theta_osts_conn | awk \'{print $3}\' | awk -F\'@\' \'{print $2}\''
+  output1 = Popen(cmd, shell=True, stdout=PIPE).communicate()[0] 
+  output1 = output1.strip()
+  cmd = 'grep ' + output1 + ' theta.routesconf | awk \'{print $3}\' | awk -F\'@\' \'{print $1}\'' # | awk -F\'\[\' \'{print $2}\''
+  output2 = Popen(cmd, shell=True, stdout=PIPE).communicate()[0] 
+  output2 = output2.strip()
+  output2 = output2.rstrip(']')
+  output2 = output2.lstrip('[')
+  print i, hex_i, output1, output2 
+
+  if it == 0:
+    lnet0 = output2.split(',') #.append(output2)
+  it = it + 1
+ 
+print
+print lnet0
+
+lnet_ost0_file = nidstrfile + '.lnet_ost0'
+f = open(lnet_ost0_file, 'w')
+f.write(output2)
+f.write('\n')
+f.close()
+
+readAllocation_(nodecfg, lnet_ost0_file)
+lnet_ost0_map = 'jobmap_'+lnet_ost0_file
 
 print 
 
+
+print
 
