@@ -114,8 +114,9 @@ def readAllocation_(nodeconfig, nidstringfile):
   f.close()
   fout.close()
 
-  x=int(rank/numgroups) + 1 
+  x=int((rank*2+1)/numgroups) + 1 
   print rank, numgroups, x 
+  if (x>4): x = 4 #todo find more centroids
   cblist_ctd = cblist_ctd.replace("x", str(x))
 
   fc = open(centroidfile, "w")
