@@ -92,8 +92,8 @@ def readAllocation_(nodeconfig, nidstringfile):
       readGlobalConfiguration_(f, node, rank)
       localrank = localrank + 1
 
-      if rank > 0:
-        s1+=","
+      #if rank > 0:
+      s1+=":2,"
       s1+=str(getfnode(node))
     
     centroidRank = (int(nodes[1]) - int(nodes[0]))/2 + int(nodes[0])
