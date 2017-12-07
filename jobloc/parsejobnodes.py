@@ -92,15 +92,17 @@ def readAllocation_(nodeconfig, nidstringfile):
       readGlobalConfiguration_(f, node, rank)
       localrank = localrank + 1
 
-      if rank > 0:
-        s1+=","
+      #if rank > 0:
+      #  s1+=","
       s1+=str(getfnode(node))
+      s1+=":2,"
     
     centroidRank = (int(nodes[1]) - int(nodes[0]))/2 + int(nodes[0])
     centroidRankList.append(centroidRank)
-    if cluster != 0:
-     s+=","
+    #if cluster != 0:
+    # s+=","
     s+=getfnode(centroidRank)
+    s+=":4,"
     cluster = cluster + 1
     print 'JOB: centroid of cluster ', group, centroidRank
     print
