@@ -48,7 +48,8 @@ def getfnode(nodename):
 #3572-3579,3727-3734
 def readAllocation_(nodeconfig, nidstringfile):
  
-  global fout
+  global fout, rank, numgroups
+
   centroidfile = nidstrfile + ".ctd"
   nodenamefile = nidstrfile + ".nid"
   centroidRankList = []
@@ -66,13 +67,15 @@ def readAllocation_(nodeconfig, nidstringfile):
   else:
     nodegroups = nidstring.split(',')
 
+  numgroups = len(nodegroups)
+
   print 'JOB: Number of clusters in current allocation: ', len(nodegroups)
   print
 
   rank = -1
   cluster = 0
-  s=""
-  s1=""
+  cblist_ctd=""
+  cblist_nid=""
   f = open(nodeconfig, "r")
   fout = open(jobmap, "w+")
 
@@ -93,28 +96,35 @@ def readAllocation_(nodeconfig, nidstringfile):
       localrank = localrank + 1
 
       #if rank > 0:
-      s1+=":2,"
-      s1+=str(getfnode(node))
+      #  cblist_nid+=","
+      cblist_nid+=str(getfnode(node))
+      cblist_nid+=":2,"
     
     centroidRank = (int(nodes[1]) - int(nodes[0]))/2 + int(nodes[0])
     centroidRankList.append(centroidRank)
-    if cluster != 0:
-     s+=","
-    s+=getfnode(centroidRank)
+    #if cluster != 0:
+    # s+=","
+    cblist_ctd+=getfnode(centroidRank)
+    cblist_ctd+=":x,"
     cluster = cluster + 1
     print 'JOB: centroid of cluster ', group, centroidRank
     print
     
+
   f.close()
   fout.close()
 
+  x=int(rank/numgroups) + 1 
+  print rank, numgroups, x 
+  cblist_ctd = cblist_ctd.replace("x", str(x))
+
   fc = open(centroidfile, "w")
-  fc.write(s)
+  fc.write(cblist_ctd)
   fc.write("\n")
   fc.close()
  
   nidfp = open(nodenamefile, "w")
-  nidfp.write(s1)
+  nidfp.write(cblist_nid)
   nidfp.write("\n")
   nidfp.close()
 
