@@ -29,30 +29,69 @@ def readGlobalConfiguration_(f, node_id, rank):
       fout.write('%s %s %s %s %s %s %s\n' % (rank, processor_id, cab_position, cab_row, cage, slot, cpu))
       break
 
+def add_more_ctd():
+
+  global nodelist, nodegroups, numgroups, numnodes, cblist_ctd
+
+  #opt_num_per_grp = 4 # numnodes/numgroups
+  #print nodelist, nodegroups, opt_num_per_grp
+
+  cblist_ctd=""
+  centroids = 0
+  for group in nodegroups:
+    
+    group = group.rstrip('\n')
+    nodes = []
+    if group.find('-') == -1:
+      nodes.append(group)
+      nodes.append(group) #to generalize the below loop
+    else:
+      nodes = group.split('-')
+    
+   # num_this_group = int(nodes[1]) - int(nodes[0]) +1
+   # if opt_num_per_grp < num_this_group:
+   #   print opt_num_per_grp, num_this_group 
+
+    localrank = 0
+    for node in range(int(nodes[0]),int(nodes[1])+1):
+      if localrank%4 == 0:
+         print localrank, node
+         cblist_ctd+=str(getfnode(node))
+         cblist_ctd+=":x,"
+         centroids = centroids+1
+      localrank = localrank + 1
+
+    print
+    
+  x = numnodes*2/centroids
+
+  return x
+
 
 def getfnode(nodename):
 
-    if len(str(nodename)) == 1:
+  if len(str(nodename)) == 1:
      nidname = "nid0000"
-    elif len(str(nodename)) == 2:
+  elif len(str(nodename)) == 2:
      nidname = "nid000"
-    elif len(str(nodename)) == 3:
+  elif len(str(nodename)) == 3:
      nidname = "nid00"
-    elif len(str(nodename)) == 4:
+  elif len(str(nodename)) == 4:
      nidname = "nid0"
  
-    nidname+=str(nodename)
-    return nidname
+  nidname+=str(nodename)
+  return nidname
 
 
 #3572-3579,3727-3734
 def readAllocation_(nodeconfig, nidstringfile):
  
-  global fout, rank, numgroups
+  global fout, rank, numgroups, nodegroups, numnodes, nodelist, cblist_ctd
 
   centroidfile = nidstrfile + ".ctd"
   nodenamefile = nidstrfile + ".nid"
   centroidRankList = []
+  nodelist = []
 
   jobmap = "jobmap_"+nidstringfile
 
@@ -92,11 +131,12 @@ def readAllocation_(nodeconfig, nidstringfile):
     localrank = 0
     for node in range(int(nodes[0]),int(nodes[1])+1):
       rank = rank + 1
+      nodelist.append(node)
       readGlobalConfiguration_(f, node, rank)
       localrank = localrank + 1
 
       #if rank > 0:
-      #  cblist_nid+=","
+      #  cblist_nid+=","  #bug in Cray MPI/MPICH? requires ',' at the end
       cblist_nid+=str(getfnode(node))
       cblist_nid+=":2,"
     
@@ -114,10 +154,15 @@ def readAllocation_(nodeconfig, nidstringfile):
   f.close()
   fout.close()
 
+  numnodes = len(nodelist)
+
   x=int((rank*2+1)/numgroups) + 1 
   print rank, numgroups, x 
-  if (x>4): x = 4 #todo find more centroids
+  if (x>3): 
+    x=add_more_ctd()
+    
   cblist_ctd = cblist_ctd.replace("x", str(x))
+
 
   fc = open(centroidfile, "w")
   fc.write(cblist_ctd)
