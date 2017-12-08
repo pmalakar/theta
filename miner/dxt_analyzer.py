@@ -212,6 +212,7 @@ def get_verts_all(data, module, action):
         lx,rx,by,ty = entry[1][0], entry[1][1], entry[0] - 0.5 , entry[0] + 0.5
         newverts = np.array([((lx,by), (lx,ty), (rx, ty), (rx, by))])
         verts = np.concatenate((verts, newverts))
+        #print lx,rx,rx-lx
     return verts[1:]
 
 def get_ost_info(data, module, action, ostnum):
@@ -303,7 +304,7 @@ if ostaccess_flag == True:
         for x in range(len(ost)):
             print ost[x], posix_write_ost[x], posix_read_ost[x] 
 
-exit()
+#exit()
 
 fig, ax = plt.subplots(dpi=150)
 
@@ -319,20 +320,21 @@ else :  # mode=='all'
     posix_verts = get_verts_all(logdata, 'POSIX', action)
     posix_collec = matplotlib.collections.PolyCollection(posix_verts, facecolor='red', edgecolor='red')
     title = str(jobid)+'_'+action+'_activity'
-
+    print title
 
 ax.add_collection(mpiio_collec)
 ax.add_collection(posix_collec)
 ax.autoscale()
 
-
 plt.ylabel("MPI rank")
 plt.xlabel("Time (s)")
 plt.title(title)
 
-
-#if (showflag):
-#    plt.show()
-#else:
-#    plt.savefig(savefig, format='pdf')
+if (showflag):
+    print "show"
+    plt.show()
+else:
+    print "save"
+    savefig = dxt_logname + '.pdf'
+    plt.savefig(savefig, format='pdf')
 
