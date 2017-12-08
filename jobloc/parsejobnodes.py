@@ -88,8 +88,8 @@ def readAllocation_(nodeconfig, nidstringfile):
  
   global fout, rank, numgroups, nodegroups, numnodes, nodelist, cblist_ctd
 
-  centroidfile = nidstrfile + ".ctd"
-  nodenamefile = nidstrfile + ".nid"
+  centroidfile = nidstringfile + ".ctd"
+  nodenamefile = nidstringfile + ".nid"
   centroidRankList = []
   nodelist = []
 
@@ -162,7 +162,6 @@ def readAllocation_(nodeconfig, nidstringfile):
     x=add_more_ctd()
     
   cblist_ctd = cblist_ctd.replace("x", str(x))
-
 
   fc = open(centroidfile, "w")
   fc.write(cblist_ctd)
