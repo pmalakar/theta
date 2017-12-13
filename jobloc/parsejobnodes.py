@@ -70,6 +70,7 @@ def add_more_ctd():
 
 def getfnode(nodename):
 
+  nidname=""
   if len(str(nodename)) == 1:
      nidname = "nid0000"
   elif len(str(nodename)) == 2:
