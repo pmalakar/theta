@@ -21,7 +21,6 @@ while True:
   ostidx.append(tokens[1])
  
 f.close()
-print ostib, ostidx
 
 it=0
 for i in ostib:
