@@ -148,16 +148,16 @@ print
 
 parse_osts()
 
-lnet0 = []
+lnet0 = '' #[]
 it = 0
 
 for i in osts:
   hex_i = 'OST%04x' % int(i)
-  #print i, hex_i
-  cmd = 'grep ' + hex_i + ' theta_osts_conn | awk \'{print $3}\' | awk -F\'@\' \'{print $2}\''
+  print i, hex_i
+  cmd = 'grep ' + hex_i + ' cori_osts_conn | awk \'{print $3}\' | awk -F\'@\' \'{print $2}\''
   output1 = Popen(cmd, shell=True, stdout=PIPE).communicate()[0] 
   output1 = output1.strip()
-  cmd = 'grep ' + output1 + ' theta.routesconf | awk \'{print $3}\' | awk -F\'@\' \'{print $1}\'' # | awk -F\'\[\' \'{print $2}\''
+  cmd = 'grep ' + output1 + ' cori.routesconf | awk \'{print $3}\' | awk -F\'@\' \'{print $1}\'' # | awk -F\'\[\' \'{print $2}\''
   output2 = Popen(cmd, shell=True, stdout=PIPE).communicate()[0] 
   output2 = output2.strip()
   output2 = output2.rstrip(']')
@@ -165,7 +165,8 @@ for i in osts:
   print i, hex_i, output1, output2 
 
   if it == 0:
-    lnet0 = output2.split(',') #.append(output2)
+    lnet0 = output2 #.split(',') #.append(output2)
+
   it = it + 1
  
 print
@@ -173,7 +174,8 @@ print lnet0
 
 lnet_ost0_file = nidstrfile + '.lnet_ost0'
 f = open(lnet_ost0_file, 'w')
-f.write(output2)
+f.write(lnet0)
+#f.write(output2)
 f.write('\n')
 f.close()
 
@@ -181,7 +183,4 @@ readAllocation_(nodecfg, lnet_ost0_file)
 lnet_ost0_map = 'jobmap_'+lnet_ost0_file
 
 print 
-
-
-print
 
