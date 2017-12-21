@@ -5,7 +5,7 @@
 
 #SBATCH -p debug
 #SBATCH -t 00:10:00
-#SBATCH -N 2
+#SBATCH -N 1
 #SBATCH -J my_job
 ###SBATCH -C knl,quad,cache    ####haswell
 ##SBATCH -o my_job.o%j
