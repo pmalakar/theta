@@ -1,7 +1,9 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import sys
+import numpy as np
 from subprocess import *
+from collections import OrderedDict
 
 from parsejobnodes import readAllocation_
 
@@ -154,6 +156,8 @@ it = 0
 ost_lnet_file = nidstrfile + '.ost2lnet'
 o2lfile = open(ost_lnet_file, 'w')
 
+ostlnet_dict = OrderedDict()
+#lnets=[]
 
 for i in osts:
   hex_i = 'OST%04x' % int(i)
@@ -172,21 +176,29 @@ for i in osts:
 
   if it == 0:
     lnet0 = output2 #.split(',') #.append(output2)
+  
+#  lnets.append(output2)
+  ostlnet_dict[i] = output2
 
   it = it + 1
  
 o2lfile.close()
 
-print
+#print
+print ostlnet_dict
+#print
 
-lnet_ost0_file = nidstrfile + '.lnet_ost0'
-f = open(lnet_ost0_file, 'w')
-f.write(lnet0)
-f.write('\n')
-f.close()
-
-readAllocation_(nodecfg, lnet_ost0_file)
-lnet_ost0_map = 'jobmap_'+lnet_ost0_file
+for key in ostlnet_dict:
+ #words = ostlnet_dict[key].split(',')
+ lnetfile = nidstrfile + '.ost.' + key
+# print lnetfile
+ f = open(lnetfile, 'w')
+ f.write(ostlnet_dict[key])
+ f.write('\n')
+ f.close()
+ 
+ readAllocation_(nodecfg, lnetfile)
+ lnet_ost0_map = 'jobmap_'+lnetfile
 
 print 
 
