@@ -175,7 +175,8 @@ def readAllocation_(nodeconfig, nidstringfile):
   nidfp.close()
 
 #config file
-nodecfg = sys.argv[1]
+machine = sys.argv[1]
+nodecfg = machine+'.allnodes'
 
 #current allocation
 nidstrfile = sys.argv[2] 

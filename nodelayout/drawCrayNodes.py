@@ -111,7 +111,8 @@ cabinets = []
 cabinet_positions = list()
 
 #config file
-nodecfg = sys.argv[1]
+machine = sys.argv[1]
+nodecfg = machine+'.allnodes' 
 
 #current allocation
 nidstrfile = sys.argv[2] 
@@ -156,9 +157,6 @@ it = 0
 ost_lnet_file = nidstrfile + '.ost2lnet'
 o2lfile = open(ost_lnet_file, 'w')
 
-ostlnet_dict = OrderedDict()
-#lnets=[]
-
 for i in osts:
   hex_i = 'OST%04x' % int(i)
   #print i, hex_i
@@ -174,31 +172,7 @@ for i in osts:
   writestr = str(i) + ' ' + str(hex_i)  + ' ' + output1 + ' ' + output2.replace(',',' ') + '\n'
   o2lfile.write(writestr)
 
-  if it == 0:
-    lnet0 = output2 #.split(',') #.append(output2)
-  
-#  lnets.append(output2)
-  ostlnet_dict[i] = output2
-
   it = it + 1
  
 o2lfile.close()
-
-#print
-print ostlnet_dict
-#print
-
-for key in ostlnet_dict:
- #words = ostlnet_dict[key].split(',')
- lnetfile = nidstrfile + '.ost.' + key
-# print lnetfile
- f = open(lnetfile, 'w')
- f.write(ostlnet_dict[key])
- f.write('\n')
- f.close()
- 
- readAllocation_(nodecfg, lnetfile)
- lnet_ost0_map = 'jobmap_'+lnetfile
-
-print 
 
