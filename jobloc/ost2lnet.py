@@ -22,9 +22,9 @@ def parse_osts():
  f = open(ostfile, 'r')
 
  while True:
-  line = f.readline()
-  if not line: break
-  osts = line.split()
+   line = f.readline()
+   if not line: break
+   osts = line.split()
  
  f.close()
 
@@ -50,7 +50,6 @@ print nodecfg, nidstrfile, ostfile
 
 parse_osts()
 
-lnet0 = '' #[]
 it = 0
 
 ost_lnet_file = ostfile + '.ost2lnet'
