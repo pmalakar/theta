@@ -130,6 +130,7 @@ def readfile():
  
  f = open(rank2ostfile, 'r')
  fout = open(rank2lnetfile, 'w')
+ fout_ = open(rank2lnetfile_, 'w')
 
  while True:
    line = f.readline()
@@ -152,13 +153,18 @@ def readfile():
   
    destidx_ = ostlnet_dict[ostid].split(',')[lnetidx]
    print nodeidx, nodes[nodeidx], rankmap[nodeidx], segment, lnetidx, ostlnet_dict[ostid], destidx_, servicenode_dict[destidx_]
+  # print nodeidx, nodes[nodeidx], rankmap[nodeidx], segment, lnetidx, wtime, destidx_, servicenode_dict[destidx_]
    #op = str(rank) + ' ' + destidx_
-   op = str(nodes[nodeidx]) + ' ' + destidx_
+   op = str(nodes[nodeidx]) + ' ' + destidx_ #+ ' ' + str(wtime)
    fout.write(op)
    fout.write('\n')
+   op = str(nodes[nodeidx]) + ' ' + destidx_ + ' ' + str(wtime)
+   fout_.write(op)
+   fout_.write('\n')
 
  f.close()
  fout.close()
+ fout_.close()
 
 #system name
 machine = sys.argv[1]
@@ -185,6 +191,7 @@ rank2ostfile = sys.argv[4]
 nidstrmapfile = 'jobmap_' + nidstrfile #sys.argv[5] 
 
 rank2lnetfile = nidstrfile + '.lnetroutes' # ostfile + '.lnetroutes'
+rank2lnetfile_ = nidstrfile + '.lnetroutes.wtime' # ostfile + '.lnetroutes'
 
 expand_node_list()
 
