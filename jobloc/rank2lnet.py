@@ -140,20 +140,20 @@ def readfile():
   #for each rank and ost id, read the nidstrmapfile (node index, nid, coords)
    rank = int(words[0])
    segment = int(words[1])
+   start = float(words[3])
    wtime = float(words[4])
-   ostid = words[5]
+   ostid = str(words[5])
 
    #this is the chronological node id
    nodeidx = int(math.floor(rank / ppn))
-    
    lnetidx = int(segment % 7)
 
   #source - rankmap[nodeidx]
   #dest - ostlnet_dict[ostid] - index 
   
    destidx_ = ostlnet_dict[ostid].split(',')[lnetidx]
-   print nodeidx, nodes[nodeidx], rankmap[nodeidx], segment, lnetidx, ostlnet_dict[ostid], destidx_, servicenode_dict[destidx_]
-  # print nodeidx, nodes[nodeidx], rankmap[nodeidx], segment, lnetidx, wtime, destidx_, servicenode_dict[destidx_]
+   print nodeidx, nodes[nodeidx], rankmap[nodeidx], ostid, segment, lnetidx, ostlnet_dict[ostid], destidx_, servicenode_dict[destidx_], wtime
+   print 'info', nodes[nodeidx], destidx_, ostid, start, wtime
    #op = str(rank) + ' ' + destidx_
    op = str(nodes[nodeidx]) + ' ' + destidx_ #+ ' ' + str(wtime)
    fout.write(op)
