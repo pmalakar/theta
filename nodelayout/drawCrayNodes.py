@@ -1,8 +1,9 @@
-import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+import os
 import sys
 import numpy as np
 from subprocess import *
+import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 from collections import OrderedDict
 
 from parsejobnodes import readAllocation_
@@ -148,6 +149,9 @@ f.close()
 draw_()
 
 print 
+
+if os.path.isfile(ostfile) == False:
+  exit()
 
 parse_osts()
 

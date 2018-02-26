@@ -152,7 +152,7 @@ def readfile():
   #dest - ostlnet_dict[ostid] - index 
   
    destidx_ = ostlnet_dict[ostid].split(',')[lnetidx]
-   print nodeidx, nodes[nodeidx], rankmap[nodeidx], ostid, segment, lnetidx, ostlnet_dict[ostid], destidx_, servicenode_dict[destidx_], wtime
+   print rank, nodeidx, nodes[nodeidx], rankmap[nodeidx], ostid, segment, lnetidx, ostlnet_dict[ostid], destidx_, servicenode_dict[destidx_], wtime
    print 'info', nodes[nodeidx], destidx_, ostid, start, wtime
    #op = str(rank) + ' ' + destidx_
    op = str(nodes[nodeidx]) + ' ' + destidx_ #+ ' ' + str(wtime)
