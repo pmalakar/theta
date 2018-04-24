@@ -1,7 +1,10 @@
+import os
+import sys
+import numpy as np
+from subprocess import *
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-import sys
-from subprocess import *
+from collections import OrderedDict
 
 from parsejobnodes import readAllocation_
 
@@ -109,7 +112,8 @@ cabinets = []
 cabinet_positions = list()
 
 #config file
-nodecfg = sys.argv[1]
+machine = sys.argv[1]
+nodecfg = machine+'.allnodes' 
 
 #current allocation
 nidstrfile = sys.argv[2] 
@@ -146,6 +150,9 @@ draw_()
 
 print 
 
+if os.path.isfile(ostfile) == False:
+  exit()
+
 parse_osts()
 
 lnet0 = '' #[]
@@ -153,7 +160,6 @@ it = 0
 
 ost_lnet_file = nidstrfile + '.ost2lnet'
 o2lfile = open(ost_lnet_file, 'w')
-
 
 for i in osts:
   hex_i = 'OST%04x' % int(i)
@@ -170,23 +176,7 @@ for i in osts:
   writestr = str(i) + ' ' + str(hex_i)  + ' ' + output1 + ' ' + output2.replace(',',' ') + '\n'
   o2lfile.write(writestr)
 
-  if it == 0:
-    lnet0 = output2 #.split(',') #.append(output2)
-
   it = it + 1
  
 o2lfile.close()
-
-print
-
-lnet_ost0_file = nidstrfile + '.lnet_ost0'
-f = open(lnet_ost0_file, 'w')
-f.write(lnet0)
-f.write('\n')
-f.close()
-
-readAllocation_(nodecfg, lnet_ost0_file)
-lnet_ost0_map = 'jobmap_'+lnet_ost0_file
-
-print 
 

@@ -207,6 +207,7 @@ def get_verts_all(data, module, action):
     IOdata = map(lambda x: x[1], data)
     filtered = map(lambda x: x[1], filter(lambda x: x[0]==keyword, IOdata))
     activities = map(lambda x: (x[0], (x[2], x[3])), filtered)
+    #print activities
     verts = np.zeros((1,4,2))
     for entry in activities:
         lx,rx,by,ty = entry[1][0], entry[1][1], entry[0] - 0.5 , entry[0] + 0.5
@@ -215,14 +216,16 @@ def get_verts_all(data, module, action):
         #print lx,rx,rx-lx
     return verts[1:]
 
+
 def get_ost_info(data, module, action, ostnum):
     '''count #accesses for the posix read/write activity for each ost'''
     keyword = module+'_'+action
     IOdata = map(lambda x: x[1], data)
     filtered = map(lambda x: x[1], filter(lambda x: x[0]==keyword, IOdata))
-    pattern = '\[\s*('+str(ostnum)+')\]' #str(ostnum)
+    pattern = '\[\s*('+str(ostnum)+')\]' 
     counts = sum(1 for x in filtered if re.findall(pattern, x[4]))
     return counts
+
 
 #------------------------------------------------------------------------------
 # Set variables and create plots
